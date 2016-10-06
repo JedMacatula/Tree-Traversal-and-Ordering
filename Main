@@ -1,0 +1,607 @@
+// Jed Macatula
+// 3/28/16
+
+#include<iostream>
+#include<string>
+#include<vector>
+#include<fstream>
+
+using namespace std;
+
+struct node
+{
+	node *right, *left, *back;
+	string name;
+};
+
+void preOrder(node *root, ofstream &outs)
+{
+	node *temp = root;
+	vector<node> stack;
+
+	stack.push_back(*root);
+
+	while (!stack.empty())
+	{
+		*temp = stack.back();
+		cout << temp->name << endl;
+		outs << temp->name << endl;
+		stack.pop_back();
+		if (temp->right != NULL)
+		{
+			stack.push_back(*temp->right);
+		}
+		if (temp->left != NULL)
+		{
+			stack.push_back(*temp->left);
+		}
+	}
+};
+
+void inOrder(node *root, ofstream &outs) 
+{
+	vector<node*> stack;
+	node *temp = root;
+
+	while (true) 
+	{
+		if (temp != NULL)
+		{
+			node *left = temp->left;
+			stack.push_back(temp);
+			temp = left;
+		}
+		else if (stack.empty())
+		{
+			return;
+		}
+		else 
+		{
+			temp = stack.back();
+			stack.pop_back();
+			cout << temp->name << endl;
+			outs << temp->name << endl;
+			node *right = temp->right;
+			temp = right;
+		}
+	}
+};
+
+void postOrder(node *root, ofstream &outs)
+{
+	vector<node*> stack;
+	stack.push_back(root);
+	node *prev = NULL;
+
+	while (!stack.empty())
+	{
+		node *curr = stack.back();
+		if (!prev || prev->left == curr || prev->right == curr)
+		{
+			if (curr->left)
+				stack.push_back(curr->left);
+			else if (curr->right)
+				stack.push_back(curr->right);
+		}
+		else if (curr->left == prev)
+		{
+			if (curr->right)
+				stack.push_back(curr->right);
+		}
+		else
+		{
+			cout << curr->name << endl;
+			outs << curr->name << endl;
+			stack.pop_back();
+		}
+		prev = curr;
+	}
+};
+
+int main()
+{
+	ofstream outs;
+	outs.open("output.txt");
+
+	node *apex, *curr, *prev;
+
+	// Creating Binary Search Tree
+	apex = new node;
+	curr = apex;
+	prev = apex;
+	apex->name = "Williams";
+	apex->right = new node;
+	curr = apex->right;
+	curr->back = apex;
+	prev = curr;
+	curr->name = "Wiser";
+	curr->right = NULL;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Williamson";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = apex;
+	apex->left = new node;
+	curr = apex->left;
+	prev = curr;
+	curr->back = apex;
+	curr->name = "Smith";
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Smith";
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "White";
+	curr->right = NULL;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Walsh";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = apex->left;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Anderson";
+	prev = curr;
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Robertson";
+	curr->right = NULL;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Koran";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Potter";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Roberts";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Nicholas";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr = curr->back;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Johnson";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Johnson";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Brown";
+	curr->left = NULL;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Crooks";
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Brown";
+	curr->left = NULL;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Carson";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = curr->back;
+	curr = curr->back;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Gregg";
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Holmes";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Dennis";
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Fredericks";
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Edwards";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Green";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = apex;
+	prev = apex;
+
+	cout << "Preorder Traversal" << endl;
+	cout << "-------------------------" << endl;
+	outs << "Preorder Traversal" << endl;
+	outs << "-------------------------" << endl;
+	preOrder(curr, outs);
+	cout << endl;
+	outs << endl;
+
+	// Creating Binary Search Tree
+	apex = new node;
+	curr = apex;
+	prev = apex;
+	apex->name = "Williams";
+	apex->right = new node;
+	curr = apex->right;
+	curr->back = apex;
+	prev = curr;
+	curr->name = "Wiser";
+	curr->right = NULL;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Williamson";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = apex;
+	apex->left = new node;
+	curr = apex->left;
+	prev = curr;
+	curr->back = apex;
+	curr->name = "Smith";
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Smith";
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "White";
+	curr->right = NULL;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Walsh";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = apex->left;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Anderson";
+	prev = curr;
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Robertson";
+	curr->right = NULL;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Koran";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Potter";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Roberts";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Nicholas";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr = curr->back;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Johnson";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Johnson";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Brown";
+	curr->left = NULL;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Crooks";
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Brown";
+	curr->left = NULL;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Carson";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = curr->back;
+	curr = curr->back;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Gregg";
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Holmes";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Dennis";
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Fredericks";
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Edwards";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Green";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = apex;
+	prev = apex;
+
+	cout << "Inorder Traversal" << endl;
+	cout << "-------------------------" << endl;
+	outs << "Inorder Traversal" << endl;
+	outs << "-------------------------" << endl;
+	inOrder(curr, outs);
+	cout << endl;
+	outs << endl;
+
+	// Creating Binary Search Tree
+	apex = new node;
+	curr = apex;
+	prev = apex;
+	apex->name = "Williams";
+	apex->right = new node;
+	curr = apex->right;
+	curr->back = apex;
+	prev = curr;
+	curr->name = "Wiser";
+	curr->right = NULL;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Williamson";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = apex;
+	apex->left = new node;
+	curr = apex->left;
+	prev = curr;
+	curr->back = apex;
+	curr->name = "Smith";
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Smith";
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "White";
+	curr->right = NULL;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Walsh";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = apex->left;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Anderson";
+	prev = curr;
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Robertson";
+	curr->right = NULL;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Koran";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Potter";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Roberts";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Nicholas";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr = curr->back;
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Johnson";
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Johnson";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Brown";
+	curr->left = NULL;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Crooks";
+	prev = curr;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Brown";
+	curr->left = NULL;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Carson";
+	curr->right = NULL;
+	curr->left = NULL;
+	curr = curr->back;
+	curr = curr->back;
+	prev = curr;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Gregg";
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Holmes";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Dennis";
+	curr->left = NULL;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	prev = curr;
+	curr->name = "Fredericks";
+	curr->left = new node;
+	curr = curr->left;
+	curr->back = prev;
+	curr->name = "Edwards";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = curr->back;
+	curr->right = new node;
+	curr = curr->right;
+	curr->back = prev;
+	curr->name = "Green";
+	curr->left = NULL;
+	curr->right = NULL;
+	curr = apex;
+	prev = apex;
+
+	cout << "Postorder Traversal" << endl;
+	cout << "-------------------------" << endl;
+	outs << "Postorder Traversal" << endl;
+	outs << "-------------------------" << endl;
+	postOrder(curr, outs);
+	cout << endl;
+
+	system("pause");
+	return 0;
+}
